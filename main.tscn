@@ -1,3 +1,11 @@
-[gd_scene format=3 uid="uid://cf6m2qaenccw4"]
+[gd_scene load_steps=4 format=3 uid="uid://cf6m2qaenccw4"]
+
+[ext_resource type="PackedScene" uid="uid://d2sdsrvks8cq6" path="res://rocket.tscn" id="1_51cjy"]
+[ext_resource type="Script" path="res://PhysicsProcess.cs" id="1_chldd"]
+[ext_resource type="Script" path="res://Rocket.cs" id="3_cdq0g"]
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_chldd")
+
+[node name="Rocket" parent="." instance=ExtResource("1_51cjy")]
+script = ExtResource("3_cdq0g")
