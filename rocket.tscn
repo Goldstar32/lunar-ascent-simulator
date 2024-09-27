@@ -1,10 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2sdsrvks8cq6"]
+[gd_scene load_steps=4 format=3 uid="uid://d2sdsrvks8cq6"]
+
+[ext_resource type="Script" path="res://Rocket.cs" id="1_npn0y"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5ichr"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_n3suo"]
 
 [node name="Rocket" type="StaticBody3D"]
+script = ExtResource("1_npn0y")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_5ichr")
