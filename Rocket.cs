@@ -3,8 +3,9 @@ using System;
 
 public partial class Rocket : StaticBody3D
 {
-	
-	
+	public int MDry
+	{ get; set; }
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
