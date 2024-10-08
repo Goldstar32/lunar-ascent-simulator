@@ -5,6 +5,10 @@ public partial class Rocket : StaticBody3D
 {
 	// Properties
 
+	// Total mass
+	public float MTot
+	{ get; set; }
+
 	// Dry mass aka mass excluding mass of fuel
 	public float MDry
 	{ get; set; }
@@ -22,6 +26,18 @@ public partial class Rocket : StaticBody3D
 	// Property for rotation relative to space
 	public Basis RotationBasis
 	{ get; set; }
+
+
+	// Constructor
+	public Rocket(float newMTot, float newMDry, Vector3 newVelocity, Vector3 newAcceleration, Basis newRotationBasis)
+	{
+		MTot = newMTot;
+		MDry = newMDry;
+		Velocity = newVelocity;
+		Acceleration = newAcceleration;
+		RotationBasis = newRotationBasis;
+	}
+
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
