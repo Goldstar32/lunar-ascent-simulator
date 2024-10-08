@@ -13,6 +13,7 @@ public partial class Rocket : StaticBody3D
 	public new Vector3 Position
 	{ get; set; }
 
+	// Property for velocity relative to space
 	public Vector3 Velocity
 	{ get; set; }
 
