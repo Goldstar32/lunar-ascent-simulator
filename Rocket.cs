@@ -29,14 +29,7 @@ public partial class Rocket : StaticBody3D
 
 
 	// Constructor
-	public Rocket(double newMTot, double newMDry, Vector3 newVelocity, Vector3 newAcceleration, Basis newRotationBasis)
-	{
-		MTot = newMTot;
-		MDry = newMDry;
-		Velocity = newVelocity;
-		Acceleration = newAcceleration;
-		RotationBasis = newRotationBasis;
-	}
+	public Rocket() {}
 
 
 	// Called when the node enters the scene tree for the first time.
