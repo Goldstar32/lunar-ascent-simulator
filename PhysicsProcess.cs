@@ -20,6 +20,9 @@ public partial class PhysicsProcess : Node
 
 		// Set rocket starting position
 		rocket.Position = new Vector3(0, 1, 0);
+		// Set some initial values on rocket for testing
+		rocket.MTot = 100;
+		
 
 		// Add rocket to scene
 		AddChild(rocket);
@@ -50,8 +53,14 @@ public partial class PhysicsProcess : Node
 		rocket.GlobalPosition += rocket.Velocity * (float)delta; // Position = velocity * time since last update (as float)
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
+		base._PhysicsProcess(delta);
+		UpdateAcceleration(rocket);
+		UpdateVelocity(rocket, delta);
+		UpdatePosition(rocket, delta);
 	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta) { }
 }
