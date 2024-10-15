@@ -8,7 +8,7 @@ public partial class PhysicsProcess : Node
 
 	// Rocket scene path
 	private PackedScene rocketScene;
-	private Rocket rocket;
+	private Rocket rocket1;
 
 	public override void _Ready()
 	{
@@ -16,16 +16,16 @@ public partial class PhysicsProcess : Node
 		rocketScene = (PackedScene)ResourceLoader.Load("res://rocket.tscn");
 
 		// Instanciate rocket from scene
-		rocket = (Rocket)rocketScene.Instantiate();
+		rocket1 = (Rocket)rocketScene.Instantiate();
 
 		// Set rocket starting position
-		rocket.Position = new Vector3(0, 1, 0);
+		rocket1.Position = new Vector3(0, 1, 0);
 		// Set some initial values on rocket for testing
-		rocket.MTot = 100;
-		
+		rocket1.MTot = 100;
+		rocket1.Velocity = new Vector3(0, 10, 0);
 
 		// Add rocket to scene
-		AddChild(rocket);
+		AddChild(rocket1);
 	}
 
 	// Forces will need to be calculated based on other factors (gravity by distance to moon and thrust by angle)
@@ -56,9 +56,9 @@ public partial class PhysicsProcess : Node
 	public override void _PhysicsProcess(double delta)
 	{
 		base._PhysicsProcess(delta);
-		UpdateAcceleration(rocket);
-		UpdateVelocity(rocket, delta);
-		UpdatePosition(rocket, delta);
+		UpdateAcceleration(rocket1);
+		UpdateVelocity(rocket1, delta);
+		UpdatePosition(rocket1, delta);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
