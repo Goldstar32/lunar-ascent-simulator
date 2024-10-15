@@ -6,6 +6,13 @@ public partial class PhysicsProcess : Node
 	// TEMPORARY variables for testing
 	private Vector3 gravity = new Vector3(0, -1.62f, 0);
 
+
+	// Constants (might move later)
+	const double G = 6.67430e-11; // Gravitational constant
+	const double moonMass = 7.342e22; // Mass of moon
+	Vector3 moonPos = new Vector3(0, 0, 0); // Center of moon (currently origo)
+
+
 	// Rocket scene path
 	private PackedScene rocketScene;
 	private Rocket rocket1;
@@ -28,7 +35,25 @@ public partial class PhysicsProcess : Node
 		AddChild(rocket1);
 	}
 
-	// Forces will need to be calculated based on other factors (gravity by distance to moon and thrust by angle)
+	// Calculate all current forces and return resulting force
+
+	// Calculate and return gravitational force
+	private Vector3 GetGravForce(Rocket rocket)
+	{
+		// Calculate distance between moon and rocket
+		Vector3 distanceVector = moonPos - rocket.GlobalPosition;
+		double distance = distanceVector.Length();
+
+		// Avoid division with 0 in case rocket is at the moons center
+		if (distance == 0) 
+        return Vector3.Zero;
+
+		// Calculate the magnitude
+		double magnitude = G * (moonMass * rocket.MTot) / (distance * distance);
+
+		// Return gravitational force as vector proportional to distance and direction of rocket relative to moon
+		return distanceVector.Normalized() * (float)magnitude;
+	}
 
 	// Updates acceleration based on forces (Gravitation from moon (add thrust from rocket here later))
 	private void UpdateAcceleration(Rocket rocket)
