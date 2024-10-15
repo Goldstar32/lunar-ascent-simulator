@@ -4,7 +4,6 @@ using System;
 public partial class PhysicsProcess : Node
 {
 	// TEMPORARY variables for testing
-	private Vector3 gravity = new Vector3(0, -1.62f, 0);
 
 
 	// Constants (might move later)
@@ -59,7 +58,7 @@ public partial class PhysicsProcess : Node
 	private void UpdateAcceleration(Rocket rocket)
 	{
 		Vector3 lastRes = rocket.MTot * rocket.Acceleration; // Resulting force on rocket before update
-		Vector3 newRes = gravity + lastRes; // New resulting force
+		Vector3 newRes = GetGravForce(rocket) + lastRes; // New resulting force
 		Vector3 newAcc = newRes / rocket.MTot; // New acceleration
 
 		// Update rocket with new acceleration
