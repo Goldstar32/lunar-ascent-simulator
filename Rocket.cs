@@ -27,9 +27,17 @@ public partial class Rocket : StaticBody3D
 	public Basis RotationBasis
 	{ get; set; }
 
+	// Property for angular velocity relative to space
+	public Vector3 RotationalVelocity
+	{ get; set; }
+
+	// Property for angular acceleration relative to space
+	public Vector3 RotationalAcceleration
+	{ get; set; }
+
 
 	// Constructor
-	public Rocket() {}
+	public Rocket() { }
 
 
 	// Called when the node enters the scene tree for the first time.
