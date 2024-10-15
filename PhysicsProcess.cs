@@ -9,7 +9,8 @@ public partial class PhysicsProcess : Node
 	// Constants (might move later)
 	const double G = 6.67430e-11; // Gravitational constant
 	const double moonMass = 7.342e22; // Mass of moon
-	Vector3 moonPos = new Vector3(0, 0, 0); // Center of moon (currently origo)
+	const double moonRadius = 1737.4e3;
+	Vector3 moonPos = new Vector3(0, -(float)moonRadius, 0); // Center of moon (origo is approx at surface of moon)
 
 
 	// Rocket scene path
@@ -27,8 +28,8 @@ public partial class PhysicsProcess : Node
 		// Set rocket starting position
 		rocket1.Position = new Vector3(0, 1, 0);
 		// Set some initial values on rocket for testing
-		rocket1.MTot = 100;
-		rocket1.Velocity = new Vector3(0, 10, 0);
+		rocket1.MTot = 10e3f;
+		rocket1.Velocity = new Vector3(0, 30, 0);
 
 		// Add rocket to scene
 		AddChild(rocket1);
@@ -45,7 +46,7 @@ public partial class PhysicsProcess : Node
 
 		// Avoid division with 0 in case rocket is at the moons center
 		if (distance == 0) 
-        return Vector3.Zero;
+		return Vector3.Zero;
 
 		// Calculate the magnitude
 		double magnitude = G * (moonMass * rocket.MTot) / (distance * distance);
