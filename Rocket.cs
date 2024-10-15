@@ -6,11 +6,11 @@ public partial class Rocket : StaticBody3D
 	// Properties
 
 	// Total mass
-	public double MTot
+	public float MTot
 	{ get; set; }
 
 	// Dry mass aka mass excluding mass of fuel
-	public double MDry
+	public float MDry
 	{ get; set; }
 
 	// Use Node3D.Position directily for position
