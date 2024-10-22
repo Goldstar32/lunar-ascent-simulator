@@ -33,12 +33,13 @@ transform = Transform3D(1, 0, 0, 0, -0.906308, 0.422618, 0, -0.422618, -0.906308
 shadow_enabled = true
 
 [node name="MeshInstance3DY" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.07599, 0)
 mesh = SubResource("PlaneMesh_gcdh3")
 
 [node name="MeshInstance3DX" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 9.07599, 0)
 mesh = SubResource("PlaneMesh_r731c")
 
 [node name="MeshInstance3DZ" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 5, 5)
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 9.07599, 5)
 mesh = SubResource("PlaneMesh_i1f1c")

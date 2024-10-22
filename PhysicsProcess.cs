@@ -32,7 +32,8 @@ public partial class PhysicsProcess : Node
 		rocket1.Position = new Vector3(0, 1, 0);
 		// Set some initial values on rocket for testing
 		rocket1.MTot = 10e3f;
-		rocket1.Velocity = new Vector3(0, 30, 0);
+		rocket1.Velocity = new Vector3(-10, 50, -10);
+		rocket1.Acceleration = new Vector3(0, 50, 0);
 
 		// Add rocket to scene
 		AddChild(rocket1);
@@ -85,7 +86,7 @@ public partial class PhysicsProcess : Node
 	private void UpdateAcceleration(Rocket rocket)
 	{
 		Vector3 lastRes = rocket.MTot * rocket.Acceleration; // Resulting force on rocket before update
-		Vector3 newRes = GetTotForce(rocket) + lastRes; // New resulting force
+		Vector3 newRes = lastRes + GetTotForce(rocket); // New resulting force
 		Vector3 newAcc = newRes / rocket.MTot; // New acceleration
 
 		// Update rocket with new acceleration
