@@ -7,7 +7,7 @@ margin = 0.1
 radius = 1.7374e+06
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3gga0"]
-albedo_color = Color(0.329158, 0.329158, 0.329158, 1)
+albedo_color = Color(0.234137, 0.242945, 0.247349, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_h4nwy"]
 material = SubResource("StandardMaterial3D_3gga0")
