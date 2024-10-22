@@ -8,16 +8,19 @@ public partial class PhysicsProcess : Node
 
 	// Constants (might move later)
 	const double G = 6.67430e-11; // Gravitational constant
-	const double moonMass = 7.342e22; // Mass of moon
-	const double moonRadius = 1737.4e3;
-	Vector3 moonPos = new Vector3(0, -(float)moonRadius, 0); // Center of moon (origo is approx at surface of moon)
-
 
 	// Rocket scene path
 	private PackedScene rocketScene;
+	// Create rocket object
 	private Rocket rocket1;
 
-	public override void _Ready()
+	// Moon scene path
+	private PackedScene moonScene;
+	// Create moon object
+	private Moon moon;
+
+	// Method for loading and instanciating rocket
+	private void LoadRocket()
 	{
 		// Load rocket scene
 		rocketScene = (PackedScene)ResourceLoader.Load("res://rocket.tscn");
@@ -35,21 +38,44 @@ public partial class PhysicsProcess : Node
 		AddChild(rocket1);
 	}
 
-	// Calculate all current forces and return resulting force
+	private void LoadMoon()
+	{
+		// Load moon scene
+		moonScene = (PackedScene)ResourceLoader.Load("res://moon.tscn");
+
+		// Instanciate moon from scene
+		moon = (Moon)moonScene.Instantiate();
+
+		// Add moon to scene
+		AddChild(moon);
+	}
+
+	public override void _Ready()
+	{
+		LoadRocket();
+		LoadMoon();
+	}
+
+	// Calculate all current external forces and return resulting force
+	private Vector3 GetTotForce(Rocket rocket)
+	{
+		Vector3 totForce = GetGravForce(rocket);
+		return totForce;
+	}
 
 	// Calculate and return gravitational force
 	private Vector3 GetGravForce(Rocket rocket)
 	{
 		// Calculate distance between moon and rocket
-		Vector3 distanceVector = moonPos - rocket.GlobalPosition;
+		Vector3 distanceVector = moon.GlobalPosition - rocket.GlobalPosition;
 		double distance = distanceVector.Length();
 
 		// Avoid division with 0 in case rocket is at the moons center
-		if (distance == 0) 
-		return Vector3.Zero;
+		if (distance == 0)
+			return Vector3.Zero;
 
 		// Calculate the magnitude
-		double magnitude = G * (moonMass * rocket.MTot) / (distance * distance);
+		double magnitude = G * (moon.MoonMass * rocket.MTot) / (distance * distance);
 
 		// Return gravitational force as vector proportional to distance and direction of rocket relative to moon
 		return distanceVector.Normalized() * (float)magnitude;
@@ -59,7 +85,7 @@ public partial class PhysicsProcess : Node
 	private void UpdateAcceleration(Rocket rocket)
 	{
 		Vector3 lastRes = rocket.MTot * rocket.Acceleration; // Resulting force on rocket before update
-		Vector3 newRes = GetGravForce(rocket) + lastRes; // New resulting force
+		Vector3 newRes = GetTotForce(rocket) + lastRes; // New resulting force
 		Vector3 newAcc = newRes / rocket.MTot; // New acceleration
 
 		// Update rocket with new acceleration
