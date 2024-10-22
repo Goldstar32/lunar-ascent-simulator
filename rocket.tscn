@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://d2sdsrvks8cq6"]
+[gd_scene load_steps=7 format=3 uid="uid://d2sdsrvks8cq6"]
 
 [ext_resource type="Script" path="res://Rocket.cs" id="1_npn0y"]
 
@@ -8,6 +8,12 @@
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_c1l47"]
 material = SubResource("StandardMaterial3D_01pm6")
+
+[sub_resource type="Sky" id="Sky_qbqv0"]
+
+[sub_resource type="Environment" id="Environment_p2b8l"]
+background_mode = 2
+sky = SubResource("Sky_qbqv0")
 
 [node name="Rocket" type="StaticBody3D"]
 script = ExtResource("1_npn0y")
@@ -22,4 +28,5 @@ mesh = SubResource("CylinderMesh_c1l47")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, 0.241845, -0.664463, 3, 1, -3)
+environment = SubResource("Environment_p2b8l")
 fov = 90.0
