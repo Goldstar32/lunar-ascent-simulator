@@ -32,7 +32,7 @@ public partial class PhysicsProcess : Node
 		rocket1.Position = new Vector3(0, 1, 0);
 		// Set some initial values on rocket for testing
 		rocket1.MTot = 10e3f;
-		rocket1.Velocity = new Vector3(-10, 50, -10);
+		rocket1.Velocity = new Vector3(-100, 1000, -100);
 		rocket1.Acceleration = new Vector3(0, 50, 0);
 
 		// Add rocket to scene
