@@ -13,7 +13,11 @@ public partial class Rocket : StaticBody3D
 	public float MDry
 	{ get; set; }
 
-	// Use Node3D.Position directily for position
+	// Rockets radius in meters
+	public float Radius
+	{ get; set; }
+
+	// Use Node3D.GlobalPosition directly for position
 
 	// Property for velocity relative to space
 	public Vector3 Velocity
@@ -23,27 +27,19 @@ public partial class Rocket : StaticBody3D
 	public Vector3 Acceleration
 	{ get; set; }
 
-	// Property for rotation relative to space
-	public Basis RotationBasis
-	{ get; set; }
+	// Use Node3D.GlobalBasis directly for rotation
 
 	// Property for angular velocity relative to space
-	public Vector3 RotationalVelocity
+	public Vector3 AngularVelocity
 	{ get; set; }
 
 	// Property for angular acceleration relative to space
-	public Vector3 RotationalAcceleration
+	public Vector3 AngularAcceleration
 	{ get; set; }
-
-
-	// Constructor
-	public Rocket() { }
-
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		RotationBasis = Basis.Identity;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
