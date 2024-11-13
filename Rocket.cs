@@ -5,13 +5,19 @@ public partial class Rocket : StaticBody3D
 {
 	// Properties
 
-	// Total mass
-	public float MTot
+	// Mass of fuel
+	public float MFuel
 	{ get; set; }
 
-	// Dry mass aka mass excluding mass of fuel
+	// Dry mass aka mass of rocket excluding mass of fuel
 	public float MDry
 	{ get; set; }
+
+	// Total mass
+	public float MTot
+	{ 
+		get { return MFuel + MDry; } // Return mass of fuel and rocket combined
+	}
 
 	// Rockets radius in meters
 	public float Radius
