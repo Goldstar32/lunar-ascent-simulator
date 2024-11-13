@@ -5,13 +5,13 @@ public partial class Engine : StaticBody3D
 {
     // Properties vvv
 
-    public Vector3 RelativePosition { get; set; } // Position relative to rocket
+    public Vector3 RelativePosition { get; set; } // Position relative to rocket [m]
 
-    public Basis RelativePositionBasis { get; set; } // Rotation relative to rocket
+    public Basis RelativePositionBasis { get; set; } // Rotation relative to rocket [m]
 
-    public double Thrust { get; set; } // Thrust
+    public double Thrust { get; set; } // Thrust [N]
 
-    public double FuelConsumption { get; set; } // Fuel consumption
+    public double FuelConsumption { get; set; } // Fuel consumption [kg/s]
 
 	// Properties ^^^
 	//

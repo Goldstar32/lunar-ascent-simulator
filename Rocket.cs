@@ -5,25 +5,25 @@ public partial class Rocket : StaticBody3D
 {
     // Properties vvv
 
-    public float MFuel { get; set; } // Mass of fuel
+    public float MFuel { get; set; } // Mass of fuel [kg]
 
-    public float MDry { get; set; } // Dry mass aka mass of rocket excluding mass of fuel
+    public float MDry { get; set; } // Dry mass (non fuel mass) [kg]
 
-    public float MTot => MFuel + MDry; // Total mass. Return mass of fuel and rocket combined
+    public float MTot => MFuel + MDry; // Total mass [kg]
 
-    public float Radius { get; set; } // Rockets radius in meters
+    public float Radius { get; set; } // Rockets radius [m]
 
-    // Use Node3D.GlobalPosition directly for position
+    // Use Node3D.GlobalPosition directly for position [m]
 
-    public Vector3 Velocity { get; set; } // Velocity relative to space
+    public Vector3 Velocity { get; set; } // Velocity relative to space [m/s]
 
-    public Vector3 Acceleration { get; set; } // Acceleration relative to space
+    public Vector3 Acceleration { get; set; } // Acceleration relative to space [m/s^2]
 
-    // Use Node3D.GlobalBasis directly for rotation
+    // Use Node3D.GlobalBasis directly for rotation [rad]
 
-    public Vector3 AngularVelocity { get; set; } // Property for angular velocity relative to space
+    public Vector3 AngularVelocity { get; set; } // Property for angular velocity relative to space [rad/s]
 
-    public Vector3 AngularAcceleration { get; set; } // Property for angular acceleration relative to space
+    public Vector3 AngularAcceleration { get; set; } // Property for angular acceleration relative to space [rad/s^2]
 
     // Properties ^^^
     //
