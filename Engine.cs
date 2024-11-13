@@ -1,15 +1,19 @@
 using System;
 using Godot;
 
-public partial class Engine : StaticBody3D
+public partial class Engine : Node3D
 {
+	// Constants vvv
+
+	private const double g = 9.80665; // Standard gravity (used in calculation) [N]
+
+	// Constants ^^^
+	//
     // Properties vvv
 
     public Vector3 RelativePosition { get; set; } // Position relative to rocket [m]
 
-    public Basis RelativePositionBasis { get; set; } // Rotation relative to rocket [m]
-
-    public double Thrust { get; set; } // Thrust [N]
+    public Basis RelativePositionBasis { get; set; } // Rotation relative to rocket [rad]
 
     public double FuelConsumption { get; set; } // Fuel consumption [kg/s]
 
@@ -22,4 +26,15 @@ public partial class Engine : StaticBody3D
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) { }
+
+	// Returns thrust based on engine's direction relative to rocket
+    public Vector3 GetThrust(Rocket rocket)
+    {
+        // The thrust direction is based on the engine's local -Z axis
+        Vector3 thrustDirection = -GlobalTransform.Basis.Z.Normalized(); // Thrust is applied in the engine's local -Z direction
+        Vector3 thrustForce = thrustDirection /* Insert calculated thrust */;
+
+        // Return thrust force
+        return thrustForce;
+    }
 }

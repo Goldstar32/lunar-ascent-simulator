@@ -1,3 +1,3 @@
 [gd_scene format=3 uid="uid://kkslwpe05cew"]
 
-[node name="Engine" type="StaticBody3D"]
+[node name="Engine" type="Node3D"]
