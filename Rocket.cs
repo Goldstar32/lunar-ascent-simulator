@@ -1,55 +1,37 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class Rocket : StaticBody3D
 {
-	// Properties
+    // Properties vvv
 
-	// Mass of fuel
-	public float MFuel
-	{ get; set; }
+    public float MFuel { get; set; } // Mass of fuel
 
-	// Dry mass aka mass of rocket excluding mass of fuel
-	public float MDry
-	{ get; set; }
+    public float MDry { get; set; } // Dry mass aka mass of rocket excluding mass of fuel
 
-	// Total mass
-	public float MTot
-	{ 
-		get { return MFuel + MDry; } // Return mass of fuel and rocket combined
-	}
+    public float MTot => MFuel + MDry; // Total mass. Return mass of fuel and rocket combined
 
-	// Rockets radius in meters
-	public float Radius
-	{ get; set; }
+    public float Radius { get; set; } // Rockets radius in meters
 
-	// Use Node3D.GlobalPosition directly for position
+    // Use Node3D.GlobalPosition directly for position
 
-	// Property for velocity relative to space
-	public Vector3 Velocity
-	{ get; set; }
+    public Vector3 Velocity { get; set; } // Velocity relative to space
 
-	// Property for acceleration relative to space
-	public Vector3 Acceleration
-	{ get; set; }
+    public Vector3 Acceleration { get; set; } // Acceleration relative to space
 
-	// Use Node3D.GlobalBasis directly for rotation
+    // Use Node3D.GlobalBasis directly for rotation
 
-	// Property for angular velocity relative to space
-	public Vector3 AngularVelocity
-	{ get; set; }
+    public Vector3 AngularVelocity { get; set; } // Property for angular velocity relative to space
 
-	// Property for angular acceleration relative to space
-	public Vector3 AngularAcceleration
-	{ get; set; }
+    public Vector3 AngularAcceleration { get; set; } // Property for angular acceleration relative to space
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
+    // Properties ^^^
+    //
+    // Methods vvv
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready() { }
+
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta) { }
 }

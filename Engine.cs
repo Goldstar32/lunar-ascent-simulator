@@ -1,33 +1,25 @@
-using Godot;
 using System;
+using Godot;
 
-public partial class Engine : Node
+public partial class Engine : StaticBody3D
 {
-	// Properties
+    // Properties vvv
 
-	// Position relative to rocket
-	public Vector3 RelativePosition
-	{ get; set; }
+    public Vector3 RelativePosition { get; set; } // Position relative to rocket
 
-	// Rotation relative to rocket
-	public Basis RelativePositionBasis
-	{ get; set; }
+    public Basis RelativePositionBasis { get; set; } // Rotation relative to rocket
 
-	// Thrust
-	public double Thrust
-	{ get; set; }
+    public double Thrust { get; set; } // Thrust
 
-	// Fuel consumption
-	public double FuelConsumption
-	{ get; set; }
+    public double FuelConsumption { get; set; } // Fuel consumption
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
+	// Properties ^^^
+	//
+	// Methods vvv
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready() { }
+
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta) { }
 }

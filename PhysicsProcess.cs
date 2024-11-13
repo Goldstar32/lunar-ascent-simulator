@@ -1,176 +1,184 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class PhysicsProcess : Node
 {
-	// TEMPORARY variables for testing
+    // Constants vvv (might move later)
 
+    const double G = 6.67430e-11; // Gravitational constant
 
-	// Constants (might move later)
-	const double G = 6.67430e-11; // Gravitational constant
+    // Constants ^^^
+    //
+    // Instantiate objects vvv
 
-	// Rocket scene path
-	private PackedScene rocketScene;
-	// Create rocket object
-	private Rocket rocket1;
+    private PackedScene rocketScene; // Rocket scene path
 
-	// Moon scene path
-	private PackedScene moonScene;
-	// Create moon object
-	private Moon moon;
+    private Rocket rocket1; // Instantiate rocket object
 
-	public override void _Ready()
-	{
-		LoadRocket();
-		LoadMoon();
-	}
+    private PackedScene moonScene; // Moon scene path
 
-	// Method for loading and instanciating rocket
-	private void LoadRocket()
-	{
-		// Load rocket scene
-		rocketScene = (PackedScene)ResourceLoader.Load("res://rocket.tscn");
+    private Moon moon; // Create moon object
 
-		// Instanciate rocket from scene
-		rocket1 = (Rocket)rocketScene.Instantiate();
+    // Instantiate objects ^^^
+    //
+    // Methods vvv
 
-		// Set rocket starting position
-		rocket1.Position = new Vector3(0, 1, 0);
+    // Constructor
+    public override void _Ready()
+    {
+        LoadRocket();
+        LoadMoon();
+    }
 
-		// Set some initial values on rocket for testing
-		rocket1.MDry = 10e3f;
-		rocket1.MFuel = 0;
-		rocket1.Velocity = new Vector3(-100, 1000, -100);
-		rocket1.Acceleration = new Vector3(0, 50, 0);
-		rocket1.AngularVelocity = new Vector3(3, 0, 0);
-		rocket1.Radius = 5f;
+    // Method for loading and instanciating rocket
+    private void LoadRocket()
+    {
+        // Load rocket scene
+        rocketScene = (PackedScene)ResourceLoader.Load("res://rocket.tscn");
 
-		// Add rocket to scene
-		AddChild(rocket1);
-	}
+        // Instanciate rocket from scene
+        rocket1 = (Rocket)rocketScene.Instantiate();
 
-	private void LoadMoon()
-	{
-		// Load moon scene
-		moonScene = (PackedScene)ResourceLoader.Load("res://moon.tscn");
+        // Set rocket starting position
+        rocket1.Position = new Vector3(0, 1, 0);
 
-		// Instanciate moon from scene
-		moon = (Moon)moonScene.Instantiate();
+        // Set some initial values on rocket for testing
+        rocket1.MDry = 10e3f;
+        rocket1.MFuel = 0;
+        rocket1.Velocity = new Vector3(-100, 1000, -100);
+        rocket1.Acceleration = new Vector3(0, 50, 0);
+        rocket1.AngularVelocity = new Vector3(3, 0, 0);
+        rocket1.Radius = 5f;
 
-		// Add moon to scene
-		AddChild(moon);
-	}
+        // Add rocket to scene
+        AddChild(rocket1);
+    }
 
-	// Calculate all current external forces and return resulting force
-	private Vector3 GetTotForce(Rocket rocket)
-	{
-		Vector3 totForce = GetGravForce(rocket);
-		return totForce;
-	}
+    private void LoadMoon()
+    {
+        // Load moon scene
+        moonScene = (PackedScene)ResourceLoader.Load("res://moon.tscn");
 
-	// Calculate and return gravitational force
-	private Vector3 GetGravForce(Rocket rocket)
-	{
-		// Calculate distance between moon and rocket
-		Vector3 distanceVector = moon.GlobalPosition - rocket.GlobalPosition;
-		double distance = distanceVector.Length();
+        // Instanciate moon from scene
+        moon = (Moon)moonScene.Instantiate();
 
-		// Avoid division with 0 in case rocket is at the moons center
-		if (distance == 0)
-			return Vector3.Zero;
+        // Add moon to scene
+        AddChild(moon);
+    }
 
-		// Calculate the magnitude
-		double magnitude = G * (moon.MoonMass * rocket.MTot) / (distance * distance);
+    // Calculate all current external forces and return resulting force
+    private Vector3 GetTotForce(Rocket rocket)
+    {
+        Vector3 totForce = GetGravForce(rocket);
+        return totForce;
+    }
 
-		// Return gravitational force as vector proportional to distance and direction of rocket relative to moon
-		return distanceVector.Normalized() * (float)magnitude;
-	}
+    // Calculate and return gravitational force
+    private Vector3 GetGravForce(Rocket rocket)
+    {
+        // Calculate distance between moon and rocket
+        Vector3 distanceVector = moon.GlobalPosition - rocket.GlobalPosition;
+        double distance = distanceVector.Length();
 
-	// Updates acceleration based on forces (Gravitation from moon (add thrust from rocket here later))
-	private void UpdateAcceleration(Rocket rocket)
-	{
-		Vector3 lastRes = rocket.MTot * rocket.Acceleration; // Resulting force on rocket before update
-		Vector3 newRes = lastRes + GetTotForce(rocket); // New resulting force
-		Vector3 newAcc = newRes / rocket.MTot; // New acceleration
+        // Avoid division with 0 in case rocket is at the moons center
+        if (distance == 0)
+            return Vector3.Zero;
 
-		// Update rocket with new acceleration
-		rocket.Acceleration = newAcc;
-	}
+        // Calculate the magnitude
+        double magnitude = G * (moon.MoonMass * rocket.MTot) / (distance * distance);
 
-	// Updates velocity based on acceleration and time step
-	private void UpdateVelocity(Rocket rocket, double delta)
-	{
-		rocket.Velocity += rocket.Acceleration * (float)delta; // Velocity = acceleration * time since last update (as float)
-	}
+        // Return gravitational force as vector proportional to distance and direction of rocket relative to moon
+        return distanceVector.Normalized() * (float)magnitude;
+    }
 
-	// Updates position based on velocity and time step
-	private void UpdatePosition(Rocket rocket, double delta)
-	{
-		rocket.GlobalPosition += rocket.Velocity * (float)delta; // Position = velocity * time since last update (as float)
-	}
+    // Updates acceleration based on forces (Gravitation from moon (add thrust from rocket here later))
+    private void UpdateAcceleration(Rocket rocket)
+    {
+        Vector3 lastRes = rocket.MTot * rocket.Acceleration; // Resulting force on rocket before update
+        Vector3 newRes = lastRes + GetTotForce(rocket); // New resulting force
+        Vector3 newAcc = newRes / rocket.MTot; // New acceleration
 
-	// Method to calculate torque based on the forces acting on the rocket (wip)
-	private Vector3 CalculateTorque(Rocket rocket)
-	{
-		// Teste calculation: modify this based on force application logic
-		// For instance, if thrust is applied at a distance from the center:
-		Vector3 thrustForce = new Vector3(0, 0, 0); // Replace with actual thrust force later
-		Vector3 distanceFromCenter = new Vector3(rocket.Radius, -2 * rocket.Radius, 0); // Distance vector to where the force is applied
+        // Update rocket with new acceleration
+        rocket.Acceleration = newAcc;
+    }
 
-		// Torque = r x F (cross product)
-		return distanceFromCenter.Cross(thrustForce);
-	}
+    // Updates velocity based on acceleration and time step
+    private void UpdateVelocity(Rocket rocket, double delta)
+    {
+        rocket.Velocity += rocket.Acceleration * (float)delta; // Velocity = acceleration * time since last update (as float)
+    }
 
-	// Update angular acceleration based on applied torque and moment of inertia
-	private void UpdateAngularAcceleration(Rocket rocket)
-	{
-		// Calculate the moment of inertia for a homogeneous cylinder
-		float momentOfInertia = 0.5f * rocket.MTot * rocket.Radius * rocket.Radius;
+    // Updates position based on velocity and time step
+    private void UpdatePosition(Rocket rocket, double delta)
+    {
+        rocket.GlobalPosition += rocket.Velocity * (float)delta; // Position = velocity * time since last update (as float)
+    }
 
-		// Calculate torque acting on the rocket (you'll need to define how you calculate torque)
-		Vector3 torque = CalculateTorque(rocket); // Get torque based on other forces
+    // Method to calculate torque based on the forces acting on the rocket (wip)
+    private Vector3 CalculateTorque(Rocket rocket)
+    {
+        // Teste calculation: modify this based on force application logic
+        // For instance, if thrust is applied at a distance from the center:
+        Vector3 thrustForce = new Vector3(0, 0, 0); // Replace with actual thrust force later
+        Vector3 distanceFromCenter = new Vector3(rocket.Radius, -2 * rocket.Radius, 0); // Distance vector to where the force is applied
 
-		// Calculate angular acceleration
-		Vector3 angularAcceleration = torque / momentOfInertia;
+        // Torque = r x F (cross product)
+        return distanceFromCenter.Cross(thrustForce);
+    }
 
-		// Update rocket's angular acceleration
-		rocket.AngularAcceleration = angularAcceleration;
-	}
+    // Update angular acceleration based on applied torque and moment of inertia
+    private void UpdateAngularAcceleration(Rocket rocket)
+    {
+        // Calculate the moment of inertia for a homogeneous cylinder
+        float momentOfInertia = 0.5f * rocket.MTot * rocket.Radius * rocket.Radius;
 
-	// Update angular velocity based on angular acceleration and time step
-	private void UpdateAngularVelocity(Rocket rocket, double delta)
-	{
-		// Angular velocity = angular acceleration * time since last update (as float)
-		rocket.AngularVelocity += rocket.AngularAcceleration * (float)delta;
-	}
+        // Calculate torque acting on the rocket (you'll need to define how you calculate torque)
+        Vector3 torque = CalculateTorque(rocket); // Get torque based on other forces
 
-	// Update rotation based on angular velocity and time step
-	private void UpdateRotation(Rocket rocket, double delta)
-	{
-		// Convert angular velocity into a small rotation
-		Vector3 angularVelocity = rocket.AngularVelocity * (float)delta;
+        // Calculate angular acceleration
+        Vector3 angularAcceleration = torque / momentOfInertia;
 
-		// Apply the incremental rotation to the GlobalBasis using Rotated on GlobalTransform.Basis
-		rocket.GlobalTransform = new Transform3D(
-			rocket.GlobalTransform.Basis.Rotated(angularVelocity.Normalized(), angularVelocity.Length()),
-			rocket.GlobalTransform.Origin
-		);
-	}
+        // Update rocket's angular acceleration
+        rocket.AngularAcceleration = angularAcceleration;
+    }
 
-	// Runs regularly to update physics
-	public override void _PhysicsProcess(double delta)
-	{
-		base._PhysicsProcess(delta); // Makes this run with the base physics process
+    // Update angular velocity based on angular acceleration and time step
+    private void UpdateAngularVelocity(Rocket rocket, double delta)
+    {
+        // Angular velocity = angular acceleration * time since last update (as float)
+        rocket.AngularVelocity += rocket.AngularAcceleration * (float)delta;
+    }
 
-		UpdateAcceleration(rocket1); // Update rockets acceleration
-		UpdateVelocity(rocket1, delta); // Update rockets velocity
-		UpdatePosition(rocket1, delta); // Update rockets position
+    // Update rotation based on angular velocity and time step
+    private void UpdateRotation(Rocket rocket, double delta)
+    {
+        // Convert angular velocity into a small rotation
+        Vector3 angularVelocity = rocket.AngularVelocity * (float)delta;
 
-		UpdateAngularAcceleration(rocket1);
-		UpdateAngularVelocity(rocket1, delta);
-		UpdateRotation(rocket1, delta);
-	}
+        // Apply the incremental rotation to the GlobalBasis using Rotated on GlobalTransform.Basis
+        rocket.GlobalTransform = new Transform3D(
+            rocket.GlobalTransform.Basis.Rotated(
+                angularVelocity.Normalized(),
+                angularVelocity.Length()
+            ),
+            rocket.GlobalTransform.Origin
+        );
+    }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta) { }
+    // Runs regularly to update physics
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta); // Makes this run with the base physics process
+
+        UpdateAcceleration(rocket1); // Update rockets acceleration
+        UpdateVelocity(rocket1, delta); // Update rockets velocity
+        UpdatePosition(rocket1, delta); // Update rockets position
+
+        UpdateAngularAcceleration(rocket1);
+        UpdateAngularVelocity(rocket1, delta);
+        UpdateRotation(rocket1, delta);
+    }
+
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta) { }
 }
