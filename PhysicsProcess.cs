@@ -63,8 +63,7 @@ public partial class PhysicsProcess : Node
 		rocket1.MDry = 10e3f;
 		rocket1.MFuel = 0;
 		rocket1.Velocity = new Vector3(-100, 1000, -100);
-		rocket1.Acceleration = new Vector3(0, 50, 0);
-		rocket1.AngularVelocity = new Vector3(3, 0, 0);
+		rocket1.AngularVelocity = new Vector3(0, 0, 0);
 		rocket1.Radius = 5f;
 
 		// Add rocket to scene
@@ -172,13 +171,13 @@ public partial class PhysicsProcess : Node
 		// Convert angular velocity into a small rotation
 		Vector3 angularVelocity = rocket.AngularVelocity * (float)delta;
 
-		// Apply the incremental rotation to the GlobalBasis using Rotated on GlobalTransform.Basis
-		rocket.GlobalTransform = new Transform3D(
-			rocket.GlobalTransform.Basis.Rotated(
+		// Apply the incremental rotation to the Basis using Rotated on Transform.Basis
+		rocket.Transform = new Transform3D(
+			rocket.Transform.Basis.Rotated(
 				angularVelocity.Normalized(),
 				angularVelocity.Length()
 			),
-			rocket.GlobalTransform.Origin
+			rocket.Transform.Origin
 		);
 	}
 }
