@@ -39,7 +39,7 @@ public partial class PhysicsProcess : Node
 		UpdateVelocity(rocket1, delta); // Update rockets velocity
 		UpdatePosition(rocket1, delta); // Update rockets position
 
-		UpdateAngularAcceleration(rocket1);
+		UpdateAngularAcceleration(rocket1, delta);
 		UpdateAngularVelocity(rocket1, delta);
 		UpdateRotation(rocket1, delta);
 	}
@@ -132,32 +132,25 @@ public partial class PhysicsProcess : Node
 		rocket.GlobalPosition += rocket.Velocity * (float)delta; // Position = velocity * time since last update (as float)
 	}
 
-	// Method to calculate torque based on the forces acting on the rocket (wip)
-	private Vector3 CalculateTorque(Rocket rocket)
+	// Method to calculate and return total torque based on the forces acting on the rocket
+	private Vector3 GetTotTorque(Rocket rocket, double delta)
 	{
-		// Teste calculation: modify this based on force application logic
-		// For instance, if thrust is applied at a distance from the center:
-		Vector3 thrustForce = new Vector3(0, 0, 0); // Replace with actual thrust force later
-		Vector3 distanceFromCenter = new Vector3(rocket.Radius, -2 * rocket.Radius, 0); // Distance vector to where the force is applied
-
-		// Torque = r x F (cross product)
-		return distanceFromCenter.Cross(thrustForce);
+		Vector3 totTorque = new Vector3(); // Instantiate total torque as new Vector3
+		totTorque += rocket.GetTotalThrustTorque(delta); // Add torque from thrusters
+		return totTorque; // Return total torque
 	}
 
 	// Update angular acceleration based on applied torque and moment of inertia
-	private void UpdateAngularAcceleration(Rocket rocket)
+	private void UpdateAngularAcceleration(Rocket rocket, double delta)
 	{
 		// Calculate the moment of inertia for a homogeneous cylinder
 		float momentOfInertia = 0.5f * rocket.MTot * rocket.Radius * rocket.Radius;
 
-		// Calculate torque acting on the rocket (you'll need to define how you calculate torque)
-		Vector3 torque = CalculateTorque(rocket); // Get torque based on other forces
-
-		// Calculate angular acceleration
-		Vector3 angularAcceleration = torque / momentOfInertia;
+		// Calculate torque acting on the rocket
+		Vector3 torque = GetTotTorque(rocket, delta); // Get torque based on other forces
 
 		// Update rocket's angular acceleration
-		rocket.AngularAcceleration = angularAcceleration;
+		rocket.AngularAcceleration = torque / momentOfInertia;
 	}
 
 	// Update angular velocity based on angular acceleration and time step
