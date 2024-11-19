@@ -6,5 +6,5 @@
 script = ExtResource("1_chldd")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.707107, 0.426533, -0.563977, 0, 0.797584, 0.603208, 0.707107, -0.426532, 0.563977, -5, 5, 10)
+transform = Transform3D(0.707107, 0.640856, -0.298836, 0, 0.422618, 0.906308, 0.707107, -0.640856, 0.298836, -500, 500, 1000)
 shadow_enabled = true

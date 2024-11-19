@@ -35,7 +35,7 @@ public partial class PhysicsProcess : Node
 	{
 		base._PhysicsProcess(delta); // Makes this run with the base physics process
 
-		UpdateAcceleration(rocket1); // Update rockets acceleration
+		UpdateAcceleration(rocket1, delta); // Update rockets acceleration
 		UpdateVelocity(rocket1, delta); // Update rockets velocity
 		UpdatePosition(rocket1, delta); // Update rockets position
 
@@ -83,9 +83,11 @@ public partial class PhysicsProcess : Node
 	}
 
 	// Calculate all current external forces and return resulting force
-	private Vector3 GetTotForce(Rocket rocket)
+	private Vector3 GetTotForce(Rocket rocket, double delta)
 	{
-		Vector3 totForce = GetGravForce(rocket);
+		Vector3 totForce = new Vector3(); // Instantiate total force as new Vector3
+		totForce += GetGravForce(rocket); // Add gravitational force
+		totForce += rocket.GetTotalThrustForce(delta); // Add force from thrusters
 		return totForce;
 	}
 
@@ -108,10 +110,10 @@ public partial class PhysicsProcess : Node
 	}
 
 	// Updates acceleration based on forces (Gravitation from moon (add thrust from rocket here later))
-	private void UpdateAcceleration(Rocket rocket)
+	private void UpdateAcceleration(Rocket rocket, double delta)
 	{
 		Vector3 lastRes = rocket.MTot * rocket.Acceleration; // Resulting force on rocket before update
-		Vector3 newRes = lastRes + GetTotForce(rocket); // New resulting force
+		Vector3 newRes = lastRes + GetTotForce(rocket, delta); // New resulting force
 		Vector3 newAcc = newRes / rocket.MTot; // New acceleration
 
 		// Update rocket with new acceleration

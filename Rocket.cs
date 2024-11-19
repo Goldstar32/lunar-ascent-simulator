@@ -37,4 +37,16 @@ public partial class Rocket : StaticBody3D
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta) { }
+
+	public Vector3 GetTotalThrustForce(double delta)
+    {
+        Vector3 totalThrust = Vector3.Zero;
+
+        foreach (Engine engine in Engines)
+        {
+            totalThrust += engine.GetThrustForce(delta);
+        }
+
+        return totalThrust;
+    }
 }
