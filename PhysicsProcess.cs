@@ -60,14 +60,17 @@ public partial class PhysicsProcess : Node
 		rocket1.Position = new Vector3(0, 1, 0);
 
 		// Set some initial values on rocket for testing
-		rocket1.MDry = 10e3f;
-		rocket1.MFuel = 0;
-		rocket1.Velocity = new Vector3(-100, 1000, -100);
-		rocket1.AngularVelocity = new Vector3(0, 0, 0);
-		rocket1.Radius = 5f;
+		rocket1.MDry = 2260; // [kg]
+		rocket1.MFuel = 2387; // [kg]
+		rocket1.Velocity = new Vector3(-100, 1000, -100); // Initial velocity
+		rocket1.AngularVelocity = new Vector3(0, 0, 0); // Initial angular velocity
+		rocket1.Radius = 5; // [m]
 
 		// Add rocket to scene
 		AddChild(rocket1);
+
+		// Add main engine to rocket
+		rocket1.AddNewThruster("mainThruster", new Vector3(0, -1, 0), rocket1.Transform.Basis, 5, 3040);
 	}
 
 	private void LoadMoon()
@@ -129,7 +132,7 @@ public partial class PhysicsProcess : Node
 	// Updates position based on velocity and time step
 	private void UpdatePosition(Rocket rocket, double delta)
 	{
-		rocket.GlobalPosition += rocket.Velocity * (float)delta; // Position = velocity * time since last update (as float)
+		rocket.Position += rocket.Velocity * (float)delta; // Position = velocity * time since last update (as float)
 	}
 
 	// Method to calculate and return total torque based on the forces acting on the rocket
