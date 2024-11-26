@@ -42,7 +42,6 @@ public partial class Thruster : Node3D
 
 			// Reduce rocket's fuel by deltaFuel
 			rocket.MFuel -= deltaFuel;
-			GD.Print("Remaining fuel: " + rocket.MFuel);
 
 			// Calculate thrust force magnitude
 			float thrustMagnitude = (float)ExhaustVelocity * deltaFuel / (float)delta;

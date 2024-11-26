@@ -42,6 +42,17 @@ public partial class PhysicsProcess : Node
 		UpdateAngularAcceleration(rocket1, delta);
 		UpdateAngularVelocity(rocket1, delta);
 		UpdateRotation(rocket1, delta);
+
+		if ((Math.Floor(rocket1.MFuel) % 10) == 0)
+		{
+			GD.Print("Remaining fuel: " + Math.Floor(rocket1.MFuel));
+			GD.Print(
+				"Distance to moon: "
+					+ Math.Floor(moon.GlobalPosition.DistanceTo(rocket1.GlobalPosition) / 1000)
+					+ "km"
+			);
+			GD.Print("Speed: " + Math.Floor(rocket1.Velocity.Length()) + "m/s");
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -70,7 +81,13 @@ public partial class PhysicsProcess : Node
 		AddChild(rocket1);
 
 		// Add main engine to rocket
-		rocket1.AddNewThruster("mainThruster", new Vector3(0, -1, 0), rocket1.Transform.Basis, 5, 3040);
+		rocket1.AddNewThruster(
+			"mainThruster",
+			new Vector3(0, -1, 0),
+			rocket1.Transform.Basis,
+			5,
+			3040
+		);
 	}
 
 	private void LoadMoon()
@@ -115,8 +132,7 @@ public partial class PhysicsProcess : Node
 	// Updates acceleration based on forces (Gravitation from moon (add thrust from rocket here later))
 	private void UpdateAcceleration(Rocket rocket, double delta)
 	{
-		Vector3 lastRes = rocket.MTot * rocket.Acceleration; // Resulting force on rocket before update
-		Vector3 newRes = lastRes + GetTotForce(rocket, delta); // New resulting force
+		Vector3 newRes = GetTotForce(rocket, delta); // New resulting force
 		Vector3 newAcc = newRes / rocket.MTot; // New acceleration
 
 		// Update rocket with new acceleration
@@ -171,10 +187,7 @@ public partial class PhysicsProcess : Node
 
 		// Apply the incremental rotation to the Basis using Rotated on Transform.Basis
 		rocket.Transform = new Transform3D(
-			rocket.Transform.Basis.Rotated(
-				angularVelocity.Normalized(),
-				angularVelocity.Length()
-			),
+			rocket.Transform.Basis.Rotated(angularVelocity.Normalized(), angularVelocity.Length()),
 			rocket.Transform.Origin
 		);
 	}
