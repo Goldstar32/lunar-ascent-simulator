@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2sdsrvks8cq6"]
+[gd_scene load_steps=8 format=3 uid="uid://d2sdsrvks8cq6"]
 
 [ext_resource type="Script" path="res://Rocket.cs" id="1_npn0y"]
+[ext_resource type="PackedScene" uid="uid://bgcarv666xwqm" path="res://gui.tscn" id="2_4o1pa"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_pgl4m"]
 
@@ -30,3 +31,5 @@ mesh = SubResource("CylinderMesh_c1l47")
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 10)
 environment = SubResource("Environment_p2b8l")
 fov = 90.0
+
+[node name="GUI" parent="Camera3D" instance=ExtResource("2_4o1pa")]
