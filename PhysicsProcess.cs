@@ -142,10 +142,10 @@ public partial class PhysicsProcess : Node
         double remainingFuel = rocket1.MFuel; // Current fuel mass [kg]
 
         // Update the GUI labels with formatted text
-        distanceLabel.Text = $"Distance to Moon: \n{distanceToMoon:F2} km";
+        distanceLabel.Text = $"Distance to moon: \n{distanceToMoon:F2} km";
         velocityLabel.Text = $"Velocity: \n{velocity:F2} m/s";
         accelerationLabel.Text = $"Acceleration: \n{acceleration:F2} m/s²";
-        fuelLabel.Text = $"Remaining Fuel: \n{remainingFuel:F2} kg";
+        fuelLabel.Text = $"Remaining fuel: \n{remainingFuel:F2} kg";
     }
 
     // Calculate all current external forces and return resulting force
