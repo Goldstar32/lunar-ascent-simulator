@@ -30,13 +30,13 @@ theme_override_font_sizes/font_size = 25
 text = "Distance to moon:"
 clip_text = true
 
-[node name="VelLabel" type="Label" parent="HBoxContainer/HSplitContainer/BackgroundPanel/StatsContainer"]
+[node name="VelocityLabel" type="Label" parent="HBoxContainer/HSplitContainer/BackgroundPanel/StatsContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Velocity: "
 clip_text = true
 
-[node name="AccLabel" type="Label" parent="HBoxContainer/HSplitContainer/BackgroundPanel/StatsContainer"]
+[node name="AccelerationLabel" type="Label" parent="HBoxContainer/HSplitContainer/BackgroundPanel/StatsContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Acceleration:"

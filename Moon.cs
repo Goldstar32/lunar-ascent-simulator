@@ -13,6 +13,8 @@ public partial class Moon : StaticBody3D
 
 	public double MoonMass { get; set; } // Property for moons mass
 
+	public double Radius { get; set; } // Property for moons radius
+
 	// Use global position for position
 
 	// Properties ^^^
@@ -27,6 +29,7 @@ public partial class Moon : StaticBody3D
 	{
 		// Set initial values
 		MoonMass = 7.342e22; // Mass of moon
+		Radius = moonRadius; // Radius of moon
 		this.GlobalPosition = new Vector3(0, -(float)moonRadius, 0); // Center of moon (origo is approx at surface of moon)
 	}
 
