@@ -27,25 +27,29 @@ size_flags_vertical = 8
 [node name="DistanceLabel" type="Label" parent="HBoxContainer/HSplitContainer/BackgroundPanel/StatsContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Distance to moon:"
+text = "Distance to moon:
+00,00 km"
 clip_text = true
 
 [node name="VelocityLabel" type="Label" parent="HBoxContainer/HSplitContainer/BackgroundPanel/StatsContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Velocity: "
+text = "Velocity: 
+00,00 m/s"
 clip_text = true
 
 [node name="AccelerationLabel" type="Label" parent="HBoxContainer/HSplitContainer/BackgroundPanel/StatsContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Acceleration:"
+text = "Acceleration:
+00,00 m/s²"
 clip_text = true
 
 [node name="FuelLabel" type="Label" parent="HBoxContainer/HSplitContainer/BackgroundPanel/StatsContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Remaining fuel: "
+text = "Remaining fuel: 
+00,00 kg"
 clip_text = true
 
 [node name="FillContainer" type="PanelContainer" parent="HBoxContainer/HSplitContainer"]
