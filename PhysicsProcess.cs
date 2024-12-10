@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 
 public partial class PhysicsProcess : Node
@@ -17,7 +18,9 @@ public partial class PhysicsProcess : Node
 
     private PackedScene moonScene; // Moon scene path
 
-    private Moon moon; // Create moon object
+    private Moon moon; // Instantiate moon object
+
+    private CSVWriter csvWriter = new(); // Create new csv instance for logging results
 
     // GUI Labels
     private Label distanceLabel;
@@ -25,8 +28,9 @@ public partial class PhysicsProcess : Node
     private Label accelerationLabel;
     private Label fuelLabel;
 
-    // Timer for updating labels
-    private double timeAccumulator = 0.0;
+    private double simulationTime = 0; // Total time passed in seconds
+    private double timeAccumulatorLabels = 0.0; // Timer for updating labels
+	private double timeAccumulatorLogs = 0.0; // Timer for logging values
 
     // Instantiate objects ^^^
     //
@@ -38,6 +42,28 @@ public partial class PhysicsProcess : Node
         LoadRocket();
         LoadMoon();
         GetGUILabels();
+        csvWriter.Start(
+            "test_data/logs",
+            new[]
+            {
+                $"Initial values:",
+                $"Dry mass: {rocket1.MDry} kg",
+                $"Fuel mass: {rocket1.MFuel} kg",
+                $"Total mass: {rocket1.MTot} kg",
+                $"Velocity: {rocket1.Velocity} m/s",
+                $"Acceleration: {rocket1.Acceleration} m/s^2",
+                $"Main thruster mass flow: {rocket1.Thrusters[0].Mdot} kg/s",
+                $"Main thruster exhaust velocity: {rocket1.Thrusters[0].ExhaustVelocity} m/s",
+            },
+            new[]
+            {
+                "Time [s]",
+                "Distance to moon [m]",
+                "Velocity [m/s]",
+                "Acceleration [m/s^2]",
+                "Remaining Fuel [kg]",
+            }
+        );
     }
 
     // Runs regularly to update physics
@@ -45,33 +71,59 @@ public partial class PhysicsProcess : Node
     {
         base._PhysicsProcess(delta); // Makes this run with the base physics process
 
+        // Add delta to timers
+        simulationTime += delta;
+        timeAccumulatorLabels += delta;
+		timeAccumulatorLogs += delta;
+
+        // Runs every 1 second
+        if (timeAccumulatorLabels >= 1.0)
+        {
+            UpdateGUI(rocket1); // Call GUI update function
+            timeAccumulatorLabels = 0.0; // Reset timer
+        }
+
+		// Runs every 0.2 seconds
+		if (timeAccumulatorLogs >= 0.2)
+		{
+			LogValues(rocket1); // Log values
+			timeAccumulatorLogs = 0.0; // Reset timer
+		}
+
+        // Update physics
         UpdateAcceleration(rocket1, delta); // Update rockets acceleration
         UpdateVelocity(rocket1, delta); // Update rockets velocity
         UpdatePosition(rocket1, delta); // Update rockets position
+        UpdateAngularAcceleration(rocket1, delta); // Update rockets angular acceleration
+        UpdateAngularVelocity(rocket1, delta); // Update rockets angular velocity
+        UpdateRotation(rocket1, delta); // Update rockets rotation
+    }
 
-        UpdateAngularAcceleration(rocket1, delta);
-        UpdateAngularVelocity(rocket1, delta);
-        UpdateRotation(rocket1, delta);
+    // Logs rockets current values to document
+    private void LogValues(Rocket rocket)
+    {
+        // Round values with two decimals of precision
+        string time = simulationTime.ToString("F2"); // Total time passed since launch in seconds
+        string distanceToMoon = Round(
+                moon.GlobalPosition.DistanceTo(rocket.GlobalPosition) - moon.Radius,
+                2
+            )
+            .ToString(); // Distance from rocket to moon's surface [m]
+        string velocity = rocket.Velocity.Length().ToString("F2"); // Length of velocity vector [m/s]
+        string acceleration = rocket.Acceleration.Length().ToString("F2"); // Length of acceleration vector [m/s^2]
+        string remainingFuel = rocket.MFuel.ToString("F2"); // Current fuel mass [kg]
 
-		// Add delta to accumulated time
-        timeAccumulator += delta;
-
-        // Update every 1 second
-        if (timeAccumulator >= 1.0)
-        {
-            UpdateGUI(rocket1); // Call GUI update function
-            timeAccumulator = 0.0; // Reset timer
-        }
+        csvWriter.WriteRow(new[] { time, distanceToMoon, velocity, acceleration, remainingFuel });
     }
 
     // Returns input value with x decimals of precision
-    public static double Round(double value, int precision)
+    private static double Round(double value, int precision)
     {
         double factor = Math.Pow(10, precision); // 10^precision
         return Math.Floor(value * factor) / factor;
     }
 
-    // Method for loading and instanciating rocket
+    // Method for loading rocket
     private void LoadRocket()
     {
         // Load rocket scene
@@ -86,7 +138,7 @@ public partial class PhysicsProcess : Node
         // Set some initial values on rocket for testing
         rocket1.MDry = 2260; // [kg]
         rocket1.MFuel = 2387; // [kg]
-        rocket1.Velocity = new Vector3(-100, 1000, -100); // Initial velocity
+        rocket1.Velocity = new Vector3(0, 1000, 0); // Initial velocity
         rocket1.AngularVelocity = new Vector3(0, 0, 0); // Initial angular velocity
         rocket1.Radius = 5; // [m]
 
@@ -103,6 +155,7 @@ public partial class PhysicsProcess : Node
         );
     }
 
+    // Method for loading moon
     private void LoadMoon()
     {
         // Load moon scene
