@@ -30,7 +30,7 @@ public partial class PhysicsProcess : Node
 
     private double simulationTime = 0; // Total time passed in seconds
     private double timeAccumulatorLabels = 0.0; // Timer for updating labels
-	private double timeAccumulatorLogs = 0.0; // Timer for logging values
+    private double timeAccumulatorLogs = 0.0; // Timer for logging values
 
     // Instantiate objects ^^^
     //
@@ -74,7 +74,7 @@ public partial class PhysicsProcess : Node
         // Add delta to timers
         simulationTime += delta;
         timeAccumulatorLabels += delta;
-		timeAccumulatorLogs += delta;
+        timeAccumulatorLogs += delta;
 
         // Runs every 1 second
         if (timeAccumulatorLabels >= 1.0)
@@ -83,12 +83,12 @@ public partial class PhysicsProcess : Node
             timeAccumulatorLabels = 0.0; // Reset timer
         }
 
-		// Runs every 0.2 seconds
-		if (timeAccumulatorLogs >= 0.2)
-		{
-			LogValues(rocket1); // Log values
-			timeAccumulatorLogs = 0.0; // Reset timer
-		}
+        // Runs every 0.2 seconds
+        if (timeAccumulatorLogs >= 0.2)
+        {
+            LogValues(rocket1); // Log values
+            timeAccumulatorLogs = 0.0; // Reset timer
+        }
 
         // Update physics
         UpdateAcceleration(rocket1, delta); // Update rockets acceleration
